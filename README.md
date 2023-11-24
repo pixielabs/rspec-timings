@@ -24,7 +24,6 @@ CI to send the test results to rspec-timings.
 Generate new credentials and set the secret_key_base:
 
 ```bash
-rails secret # to be copied into credentials
 rails credentials:edit
 ```
 
