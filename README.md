@@ -42,14 +42,17 @@ bundle exec rails db:create
 ```
 
 #### Start App
+
+Everything in RSpec-timings is behind [Balrog](https://github.com/pixielabs/balrog/).
+In test and development, the password is 'password' (see `config/initializers/balrog.rb`).
+
+Once you have [generated the Balrog password hash](https://github.com/pixielabs/balrog/#regenerating-a-password-hash), update the `.env`.
+
+Then start the application:
+
 ```
 foreman start
 ```
-
-Everything in rspec-timings is behind [Balrog](https://github.com/pixielabs/balrog/).
-In test and development, the password is 'password' (see `config/initializers/balrog.rb`).
-
-Once you have generated the balrog password hash, update the `.env`
 
 ### Setting up a project
 
