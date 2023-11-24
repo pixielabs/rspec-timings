@@ -1,0 +1,74 @@
+.grid.grid-cols-12.my-4
+  .col-span-6
+    %h1.text-4xl= @project.name
+  .col-span-6.text-right
+    .my-3
+      = link_to 'View project settings', settings_project_path(@project), class: 'link'
+
+- if @diff
+  %h3.text-lg
+    Viewing change between
+    %span.font-semibold #{@first_run.timestamp.to_formatted_s(:long)}
+    and
+    %span.font-semibold #{@last_run.timestamp.to_formatted_s(:long)}
+    on branch
+    %span.font-semibold #{@current_branch}.
+  .grid.grid-cols-12.gap-4.my-6
+    .col-span-3
+      .my-4
+        = form_tag project_path(@project), method: :get do
+          .py-2.test-start-date-picker
+            = label_tag :start_date, 'Start date', {class: 'block mb-2'}
+            = text_field_tag :start_date, @first_run.timestamp, {data: { behavior: 'flatpickr' }, class: 'input test-datepicker'}
+          .py-2.test-end-date-picker
+            = label_tag :end_date, 'End date', {class: 'block mb-2'}
+            = text_field_tag :end_date, @last_run.timestamp, {data: { behavior: 'flatpickr' }, class: 'input test-datepicker'}
+          .py-2
+            = label_tag :branch, 'Branch', {class: 'block mb-2'}
+            = select_tag :branch, options_for_select(@branches, @current_branch), { class: 'input'}
+
+          = submit_tag 'Submit', {class: 'button'}
+
+      .my-4
+        %p Nº tests in first run: #{@first_run.tests}
+        %p Nº tests in last run: #{@last_run.tests}
+        %p Total in common: #{@diff.length}
+
+
+      .my-4
+        - if @project.github_url.present?
+          = link_to 'View code diff between these dates', "#{@project.github_url}/compare/#{@first_run.commit}..#{@last_run.commit}", class: 'link', target: '_blank'
+        - else
+          = link_to 'Add a link to your GitHub repo to view the code diff', edit_project_path(@project), class: 'link'
+
+    .col-span-9
+      .grid.grid-cols-12.gap-4
+        .col-span-3
+      %table.table-fixed.w-full
+        %thead
+          %tr
+            %th{class: 'md:w-3/5 xl:w-3/5'}= sortable 'name', 'Test'
+            %th= sortable 'first_run_time', 'First run test time'
+            %th= sortable 'last_run_time', 'Last run test time'
+            %th= sortable 'time_diff', 'Change in test run time'
+        %tbody.border
+          - @diff.each do |test|
+            %tr.border
+              %td.text-sm
+                %p
+                  .italic= test['file']
+                  = link_to test['name'], project_test_case_path(@project, test['hash_code']), class: 'link'
+              %td.text-center= test['first_run_time']
+              %td.text-center= test['last_run_time']
+              %td.text-center{class: test['time_diff'].to_f <= 0 ? 'text-green-500' : 'text-red-600'}
+                = test['time_diff'].to_f > 0 ? "+#{test['time_diff']}" : test["time_diff"]
+- else
+  %p No test runs yet! Have you added a step to upload them in your CI?
+  %pre.bg-gray-100.p-4.my-6.overflow-x-scroll
+    %code
+      curl #{root_url}projects/#{@project.uid}/test_runs \
+      \
+      \-F file=@/tmp/test-results/rspec.xml \
+      \-F branch=BRANCH \
+      \-F commit=COMMIT
+

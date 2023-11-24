@@ -1,0 +1,28 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.link {
+  @apply text-blue-600;
+  &:hover {
+    @apply text-blue-800;
+  }
+}
+
+.button {
+  @apply py-2 px-4 my-2 bg-blue-400 text-white rounded inline-block;
+  &:hover {
+    @apply bg-blue-600;
+  }
+}
+
+.input {
+  @apply bg-white border border-gray-300 rounded py-2 px-2 block appearance-none leading-normal my-2 w-full;
+  &:focus {
+    @apply outline-none shadow-outline;
+  }
+}
+
+th, td {
+  @apply px-2 py-2;
+}

@@ -1,0 +1,22 @@
+.grid.grid-cols-12.my-4
+  .col-span-6
+    %h1.text-4xl= link_to @project.name, project_path(@project)
+  .col-span-6.text-right
+    .my-3
+      = link_to 'Back to project', project_path(@project), class: 'link'
+
+%table
+  %tbody
+    %tr
+      %th.text-right Test name
+      %td= @test_cases.first.name
+    %tr
+      %th.text-right Location
+      %td= @test_cases.first.file
+    %tr
+      %th.text-right Most recent build
+      %td= @test_cases.last.test_run.timestamp
+
+.grid.grid-cols-12.my-10
+  .col-span-12
+    = line_chart @chart_data, label: 'Time', suffix: 's', curve: false

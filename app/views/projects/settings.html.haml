@@ -1,0 +1,28 @@
+.grid.grid-cols-12.my-4
+  .col-span-6
+    %h1.text-4xl= @project.name
+  .col-span-6.text-right
+    .my-3
+      = link_to 'Back to project overview', project_path(@project), class: 'link'
+
+.my-10
+  %table
+    %tbody
+      %tr
+        %th.text-left GitHub URL
+        %td
+          - if @project.github_url.present?
+            %span.link= link_to @project.github_url, @project.github_url
+          - else
+            %span= link_to 'Add GitHub URL', edit_project_path(@project), class: 'link'
+
+      %tr
+        %th.text-left UID
+        %td= @project.uid
+
+      %tr
+        %td{colspan: 2}
+          = link_to 'Edit', edit_project_path(@project), class: 'link mr-2'
+          = link_to 'Delete', project_path(@project), class: 'link', method: :delete, data: { confirm: 'Are you sure? This will also delete any associated test runs.' }
+
+

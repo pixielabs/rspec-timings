@@ -1,0 +1,24 @@
+.grid.grid-cols-12.my-4
+  .col-span-6
+    %h1.text-4xl Your projects
+  .col-span-6.text-right
+    .my-3
+      = link_to 'Add a project', new_project_path, class: 'link'
+
+%section.my-10
+  - if @projects.load.any?
+    %table.border.table-fixed
+      %thead
+        %tr.border
+          %th
+          %th Number of tests
+          %th Last test run received
+          %th
+      %tbody
+        - @projects.each do |project|
+          %tr.text-center.border
+            %th.text-left.text-lg= project.name
+            %td= project.last_test_run&.tests
+            %td= project.last_test_run ? "#{time_ago_in_words(project.last_test_run.timestamp).capitalize} ago" : ''
+            %td= link_to 'View test details', project_path(project), class: 'button'
+

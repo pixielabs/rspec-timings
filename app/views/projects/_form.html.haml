@@ -1,0 +1,17 @@
+= form_for @project do |f|
+  - if @project.errors.any?
+    .border.border-red-400.rounded.p-4.text-red-600.my-4
+      %p.mb-2 Some errors prevented the project from being saved:
+      %ul.list-disc.list-inside
+        - @project.errors.full_messages.each do |error|
+          %li.text-red-600= error
+
+  = f.label :name
+  = f.text_field :name, class: 'input'
+
+  = f.label :github_url
+  = f.text_field :github_url, class: 'input'
+
+  .text-center.my-5
+    = f.submit class: 'button'
+

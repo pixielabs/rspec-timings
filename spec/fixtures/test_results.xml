@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="rspec" tests="4" skipped="1" failures="1" errors="0" time="10.123456" timestamp="2020-05-06T14:15:21+01:00" hostname="testrun">
+<properties>
+  <property name="seed" value="1"/>
+</properties>
+<testcase classname="spec.requests.some_spec" name="Test 1" file="./spec/requests/some_spec.rb" time="0.196158"></testcase>
+<testcase classname="spec.models.some_spec" name="Test 2" file="./spec/models/some_spec.rb" time="0.196158"></testcase>
+<testcase classname="spec.controllers.some_spec" name="Failed test" file="./spec/controllers/some_spec.rb" time="0.065845"><failure message="Failed"></failure></testcase>
+<testcase classname="spec.features.some_spec" name="Skipped test" file="./spec/features/some_spec.rb" time="0.000012"><skipped/></testcase>
+</testsuite>

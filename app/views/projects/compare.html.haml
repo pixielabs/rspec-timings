@@ -1,0 +1,57 @@
+.grid.grid-cols-12.my-4
+  .col-span-6
+    %h1.text-4xl= @project.name
+  .col-span-6.text-right
+    .my-3
+      = link_to 'View project settings', settings_project_path(@project), class: 'link'
+
+- if @diff.all
+  %h3.text-lg
+    Viewing change between
+    = link_to @base.commit, "#{@project.github_url}/commit/#{@base.commit}", class: 'link'
+    and 
+    = link_to @compare.commit, "#{@project.github_url}/commit/#{@compare.commit}", class: 'link'
+  .grid.grid-cols-12.gap-4.my-6
+    .col-span-3
+      .my-4
+        %p Nº tests in base: #{@base.tests}
+        %p Nº tests in compare: #{@compare.tests}
+        %p Total in common: #{@diff.all.length}
+
+      .my-4
+        - if [@project.github_url, @base.commit, @compare.commit].all?(&:present?)
+          = link_to 'View code diff between these dates', "#{@project.github_url}/compare/#{@base.commit}..#{@compare.commit}", class: 'link', target: '_blank'
+        - else
+          = link_to 'Add a link to your GitHub repo to view the code diff', edit_project_path(@project), class: 'link'
+
+    .col-span-9
+      .grid.grid-cols-12.gap-4
+        .col-span-3
+      %table.table-fixed.w-full
+        %thead
+          %tr
+            %th{class: 'md:w-3/5 xl:w-3/5'} Test
+            %th First run test time
+            %th Last run test time
+            %th Change in test run time
+        %tbody.border
+          - @diff.all.each do |test|
+            %tr.border
+              %td.text-sm
+                %p
+                  .italic= test['file']
+                  = link_to test['name'], project_test_case_path(@project, test['hash_code']), class: 'link'
+              %td.text-center= test['first_run_time']
+              %td.text-center= test['last_run_time']
+              %td.text-center{class: test['time_diff'].to_f <= 0 ? 'text-green-500' : 'text-red-600'}
+                = test['time_diff'].to_f > 0 ? "+#{test['time_diff']}" : test["time_diff"]
+- else
+  %p No test runs yet! Have you added a step to upload them in your CI?
+  %pre.bg-gray-100.p-4.my-6.overflow-x-scroll
+    %code
+      curl #{root_url}projects/#{@project.uid}/test_runs \
+      \
+      \-F file=@/tmp/test-results/rspec.xml \
+      \-F branch=BRANCH \
+      \-F commit=COMMIT
+
