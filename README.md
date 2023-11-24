@@ -10,12 +10,12 @@ they're introduced.
 
 ## Getting started
 
-There's two parts to storing test results with rspec-timings:
+There's two parts to storing test results with RSpec-timings:
 
 1. You'll need this app deployed somewhere, e.g. on Heroku, and a project set up
 in it corresponding to the app you're monitoring.
 2. In the app you wish to monitor, you'll need to add an extra step in your
-CI to send the test results to rspec-timings.
+CI to send the test results to RSpec-timings.
 
 ## Running locally
 
@@ -62,7 +62,7 @@ rails secret # to be copied into credentials
 rails credentials:edit
 ```
 
-Once your rspec-timings app is deployed, you'll need to login with the password you created using Balrog.
+Once your RSpec-timings app is deployed, you'll need to login with the password you created using Balrog.
 Create a new project for the app you wish to monitor, and note the
 project UID as you'll need it to send the test results.
 
